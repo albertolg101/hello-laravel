@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('localized_texts', function (Blueprint $table) {
             $table->id();
             $table->string('content');
-            $table->foreignId('language_id')->constrained();
-            $table->foreignId('translatable_id')->constrained();
+            $table->foreignId('language_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('translatable_id')->constrained()->cascadeOnDelete();
             $table->timestamps();
         });
     }

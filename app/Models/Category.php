@@ -14,4 +14,11 @@ class Category extends Model
     {
         return $this->morphOne(Translatable::class, 'translatable');
     }
+
+    protected static function booted()
+    {
+        static::deleting(function ($category) {
+            $category->translations()->delete();
+        });
+    }
 }

@@ -3,22 +3,10 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use App\Models\Abstract\Translatable;
 
-class Category extends Model
+class Category extends Translatable
 {
     /** @use HasFactory<\Database\Factories\CategoryFactory> */
     use HasFactory;
-
-    public function translations()
-    {
-        return $this->morphOne(Translations::class, 'translatable');
-    }
-
-    protected static function booted()
-    {
-        static::deleting(function ($category) {
-            $category->translations()->delete();
-        });
-    }
 }

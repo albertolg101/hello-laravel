@@ -21,6 +21,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             LanguageSeeder::class,
             CategorySeeder::class,
+            PollSeeder::class,
         ]);
     }
 }

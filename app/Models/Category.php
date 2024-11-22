@@ -12,7 +12,7 @@ class Category extends Model
 
     public function translations()
     {
-        return $this->morphOne(Translatable::class, 'translatable');
+        return $this->morphOne(Translations::class, 'translatable');
     }
 
     protected static function booted()

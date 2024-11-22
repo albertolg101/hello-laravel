@@ -5,9 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Translatable extends Model
+class Translations extends Model
 {
-    /** @use HasFactory<\Database\Factories\TranslatableFactory> */
+    /** @use HasFactory<\Database\Factories\TranslationsFactory> */
     use HasFactory;
 
     protected $fillable = [

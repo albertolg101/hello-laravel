@@ -4,7 +4,7 @@ namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 use App\Models\Category;
-use App\Models\Translatable;
+use App\Models\Translations;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Category>
@@ -33,6 +33,6 @@ class CategoryFactory extends Factory
     public static function addTranslation(Category $category, int $count=1)
     {
         $category->translations()->create();
-        Translatable::factory()->addLocalizedText($category->translations, $count, true);
+        Translations::factory()->addLocalizedText($category->translations, $count, true);
     }
 }

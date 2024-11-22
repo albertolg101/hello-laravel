@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('content');
             $table->foreignId('language_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('translatable_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('translations_id')->constrained()->cascadeOnDelete();
             $table->timestamps();
         });
     }

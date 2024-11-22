@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('translatables', function (Blueprint $table) {
+        Schema::create('translations', function (Blueprint $table) {
             $table->id();
             $table->foreignId('default_localized_text_id')->nullable()->constrained('localized_texts');
             $table->morphs('translatable');
@@ -24,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('translatables');
+        Schema::dropIfExists('translations');
     }
 };

@@ -9,4 +9,9 @@ class PollOption extends Translatable
 {
     /** @use HasFactory<\Database\Factories\PollOptionFactory> */
     use HasFactory;
+
+    function votes()
+    {
+        return $this->hasMany(PollVote::class);
+    }
 }

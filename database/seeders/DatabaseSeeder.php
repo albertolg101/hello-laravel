@@ -22,6 +22,7 @@ class DatabaseSeeder extends Seeder
             LanguageSeeder::class,
             CategorySeeder::class,
             PollSeeder::class,
+            PollVoteSeeder::class,
         ]);
     }
 }

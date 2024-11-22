@@ -20,8 +20,13 @@ class LocalizedTextFactory extends Factory
         $language = Language::inRandomOrder()->first();
 
         return [
-            'content' => $this->faker->sentence,
+            'content' => $this->faker->text(),
             'language_id' => $language
         ];
+    }
+
+    public function withContentAsWord(bool $asWord = true)
+    {
+        return $asWord ? $this->state(fn () => ['content' => $this->faker->word]) : $this;
     }
 }

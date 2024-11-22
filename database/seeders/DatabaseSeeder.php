@@ -20,7 +20,7 @@ class DatabaseSeeder extends Seeder
 
         $this->call([
             LanguageSeeder::class,
-            TranslatableSeeder::class,
+            CategorySeeder::class,
         ]);
     }
 }

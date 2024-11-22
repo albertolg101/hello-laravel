@@ -23,4 +23,9 @@ class Translatable extends Model
     {
         return $this->hasMany(LocalizedText::class );
     }
+
+    public function translatable()
+    {
+        return $this->morphTo();
+    }
 }

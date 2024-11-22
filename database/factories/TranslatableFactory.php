@@ -23,20 +23,21 @@ class TranslatableFactory extends Factory
         ];
     }
 
-    public function withLocalizedText(int $count = 1)
+    public function withLocalizedText(int $count = 1, bool $asWord = false)
     {
-        return $this->afterCreating(function (Translatable $translatable) use ($count) {
-            $this->addLocalizedText($translatable, $count);
+        return $this->afterCreating(function (Translatable $translatable) use ($count, $asWord) {
+            $this->addLocalizedText($translatable, $count, $asWord);
         });
     }
 
-    public static function addLocalizedText(Translatable $translatable, int $count = 1)
+    public static function addLocalizedText(Translatable $translatable, int $count = 1, bool $asWord = false)
     {
         $language_ids = Language::inRandomOrder()->limit($count)->pluck('id')->all();
         $localizedTexts = LocalizedText::factory()
             ->count($count)
             ->sequence(fn($sequence) => ['language_id' => $language_ids[$sequence->index]])
             ->state(['translatable_id' => $translatable->id])
+            ->withContentAsWord($asWord)
             ->create();
         $translatable->update(['default_localized_text_id' => $localizedTexts->first()->id]);
     }

@@ -7,25 +7,23 @@ use App\Models\Translations;
 
 abstract class Translatable extends Model
 {
-    public function getDefaultText()
+    public function translationOrDefault(int $languageId = null)
     {
-//        return $this->translations()->first()->defaultLocalizedText()->first()->content;
-        return $this->translations->defaultLocalizedText->content;
-    }
-    public function text(int $languageId = null)
-    {
-        if ($languageId !== null) {
-            $localizedText = $this
-                ->translations
-                ->localizedTexts->where('language_id', $languageId)->first();
-
-
-            if ($localizedText !== null) {
-                return $localizedText->content;
-            }
+        $language = $this->translation($languageId);
+        if ($language === null) {
+            $language = $this->translations->defaultLocalizedText;
         }
 
-        return $this->getDefaultText();
+        return $language;
+    }
+
+    public function translation(int $languageId = null)
+    {
+        if ($languageId === null) {
+            return null;
+        }
+
+        return $this->translations->localizedTexts->where('language_id', $languageId)->first();
     }
 
     public function translations()

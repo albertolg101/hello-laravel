@@ -33,8 +33,8 @@ abstract class Translatable extends Model
 
     protected static function booted()
     {
-        static::deleting(function ($category) {
-            $category->translations()->delete();
+        static::deleting(function ($translatable) {
+            $translatable->translations()->delete();
         });
     }
 }

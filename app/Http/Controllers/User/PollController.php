@@ -4,7 +4,9 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use App\Models\Language;
+use App\Models\LocalizedText;
 use App\Models\Poll;
+use App\Models\PollQuestion;
 use Illuminate\Http\Request;
 use Symfony\Component\Routing\Route;
 
@@ -45,6 +47,40 @@ class PollController extends Controller
             'prevPollId' => $prevPollId,
             'nextPollId' => $nextPollId,
         ]);
+    }
+
+    public function create()
+    {
+        $languages = Language::all();
+        return view('user.polls.create', compact('languages'));
+    }
+
+    public function store(Request $request)
+    {
+        $request->validate([
+            'question' => ['required', 'string', 'max:255'],
+            'options' => ['required', 'array', 'min:2', 'max:2', ],
+            'options.*' => ['required', 'string', 'max:255'],
+            'language' => ['required', 'int'],
+        ]);
+
+        $poll = Poll::create();
+
+        $question = $poll->question()->create()->addLocalizableText(
+            $request->input('question'),
+            $request->input('language'),
+            setAsDefault: true,
+        );
+
+        foreach ($request->input('options') as $option) {
+            $poll->options()->create()->addLocalizableText(
+                $option,
+                $request->input('language'),
+                setAsDefault: true,
+            );
+        }
+
+        return redirect()->route('user.poll.show', ['id' => $poll->id]);
     }
 
     public function destroy(Request $request, int $id)

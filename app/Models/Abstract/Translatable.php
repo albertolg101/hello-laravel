@@ -2,6 +2,7 @@
 
 namespace App\Models\Abstract;
 
+use App\Models\LocalizedText;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Translations;
 
@@ -29,6 +30,24 @@ abstract class Translatable extends Model
     public function translations()
     {
         return $this->morphOne(Translations::class, 'translatable');
+    }
+
+    public function addLocalizableText(
+        string       $text,
+        int          $languageId,
+        bool         $setAsDefault = false,
+    )
+    {
+        $translations = $this->translations()->firstOrCreate();
+        $localizedText = $translations->localizedTexts()->create([
+            'content' => $text,
+            'language_id' => $languageId,
+            'translations_id' => $translations->id,
+        ]);
+
+        if ($setAsDefault) {
+            $translations->update(['default_localized_text_id' => $localizedText->id]);
+        }
     }
 
     protected static function booted()

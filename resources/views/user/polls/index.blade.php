@@ -26,5 +26,5 @@
             </li>
         </ul>
     @endforeach
-    <button>New Poll</button>
+    <button onclick="location.href = '{{ route('user.poll.create') }}'">New Poll</button>
 </div>

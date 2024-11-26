@@ -3,7 +3,7 @@
         {{ $poll->question->translationOrDefault($language->id)->content }}
     </h1>
     <div>
-        <h3>First Question:</h3>
+        <h3>First Option:</h3>
         <p>
             @if($poll->options->count() >= 1)
                 {{ $poll->options[0]->translationOrDefault($language->id)->content }}
@@ -11,7 +11,7 @@
         </p>
     </div>
     <div>
-        <h3>Second Question:</h3>
+        <h3>Second Option:</h3>
         <p>
             @if($poll->options->count() >= 2)
                 {{ $poll->options[1]->translationOrDefault($language->id)->content }}

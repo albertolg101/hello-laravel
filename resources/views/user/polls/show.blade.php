@@ -19,9 +19,14 @@
         </p>
     </div>
     <div>
-        <button>New</button>
+        <button>New Poll</button>
         <button>Edit</button>
-        <button>Delete</button>
+        <x-delete-button
+            :route="route('user.poll.destroy', $poll->id).'?'.http_build_query([
+                'redirectTo' =>
+                    $nextPollId !== null || $prevPollId !== null
+                        ? route('user.poll.show', $nextPollId ?? $prevPollId)
+                        : route('user.poll.index')])" />
     </div>
     <div>
         <button

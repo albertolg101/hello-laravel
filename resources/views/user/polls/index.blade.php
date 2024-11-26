@@ -16,9 +16,7 @@
                     <button>
                         Edit
                     </button>
-                    <button>
-                        Delete
-                    </button>
+                    <x-delete-button route="{{ route('user.poll.destroy', $poll->id) }}" />
                 </div>
                 <ul>
                     @foreach($poll->options as $option)
@@ -28,4 +26,5 @@
             </li>
         </ul>
     @endforeach
+    <button>New Poll</button>
 </div>

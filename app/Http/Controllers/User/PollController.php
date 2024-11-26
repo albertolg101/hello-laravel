@@ -5,6 +5,8 @@ namespace App\Http\Controllers\User;
 use App\Http\Controllers\Controller;
 use App\Models\Language;
 use App\Models\Poll;
+use Illuminate\Http\Request;
+use Symfony\Component\Routing\Route;
 
 class PollController extends Controller
 {
@@ -43,5 +45,23 @@ class PollController extends Controller
             'prevPollId' => $prevPollId,
             'nextPollId' => $nextPollId,
         ]);
+    }
+
+    public function destroy(Request $request, int $id)
+    {
+        $poll = Poll::find($id);
+
+        if ($poll === null) {
+            abort(404);
+        }
+
+        $poll->delete();
+
+        $redirectTo = $request->query->get('redirectTo');
+        if ($redirectTo !== null) {
+            return redirect($redirectTo);
+        }
+
+        return redirect()->route('user.poll.index');
     }
 }

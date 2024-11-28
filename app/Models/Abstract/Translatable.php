@@ -14,6 +14,9 @@ abstract class Translatable extends Model
         if ($language === null) {
             $language = $this->translations->defaultLocalizedText;
         }
+        if ($language === null) {
+            $language = $this->translations->localizedTexts->first();
+        }
 
         return $language;
     }

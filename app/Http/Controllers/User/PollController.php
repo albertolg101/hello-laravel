@@ -7,6 +7,7 @@ use App\Models\Language;
 use App\Models\LocalizedText;
 use App\Models\Poll;
 use App\Models\PollQuestion;
+use App\Rules\UniqueLanguage;
 use Illuminate\Http\Request;
 use Symfony\Component\Routing\Route;
 
@@ -58,26 +59,31 @@ class PollController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'question' => ['required', 'string', 'max:255'],
-            'options' => ['required', 'array', 'min:2', 'max:2', ],
-            'options.*' => ['required', 'string', 'max:255'],
-            'language' => ['required', 'int'],
+            'data' => ['required', 'array', new UniqueLanguage],
+            'data.*.question' => ['required', 'string', 'max:255'],
+            'data.*.options' => ['required', 'array', 'min:2', 'max:2', ],
+            'data.*.options.*' => ['required', 'string', 'max:255'],
         ]);
 
         $poll = Poll::create();
 
-        $question = $poll->question()->create()->addLocalizableText(
-            $request->input('question'),
-            $request->input('language'),
-            setAsDefault: true,
-        );
-
-        foreach ($request->input('options') as $option) {
-            $poll->options()->create()->addLocalizableText(
-                $option,
-                $request->input('language'),
-                setAsDefault: true,
+        $question = $poll->question()->create();
+        $options = [
+            $poll->options()->create(),
+            $poll->options()->create(),
+        ];
+        foreach ($request->input('data') as $data) {
+            $question->addLocalizableText(
+                $data['question'],
+                $data['language'],
             );
+
+            for ($i = 0; $i < count($data['options']); $i++) {
+                $options[$i]->addLocalizableText(
+                    $data['options'][$i],
+                    $data['language'],
+                );
+            }
         }
 
         return redirect()->route('user.poll.show', ['id' => $poll->id]);

@@ -5,8 +5,9 @@ namespace App\Rules;
 use Closure;
 use Illuminate\Contracts\Validation\ValidationRule;
 
-class UniqueLanguage implements ValidationRule
+class InArray implements ValidationRule
 {
+    public function __construct(protected string $path, protected array $array) {}
     /**
      * Run the validation rule.
      *
@@ -14,12 +15,10 @@ class UniqueLanguage implements ValidationRule
      */
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
-        $allData = request()->input($attribute);
+        $data = PathReducer::reduce($this->path, request()->input($attribute), true);
 
-        $languages = array_column($allData, 'language');
-
-        if (count($languages) !== count(array_unique($languages))) {
-            $fail('The language field must be unique across all elements.');
+        if (count(array_diff($data, $this->array)) > 0) {
+            $fail("The $attribute field must be in the array $this->array.");
         }
     }
 }

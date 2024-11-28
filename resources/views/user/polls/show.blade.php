@@ -20,7 +20,7 @@
     </div>
     <div>
         <button onclick="location.href = '{{ route('user.poll.create') }}'">New Poll</button>
-        <button>Edit</button>
+        <button onclick="location.href = '{{ route('user.poll.edit', $poll) }}'">Edit</button>
         <x-delete-button
             :route="route('user.poll.destroy', $poll->id).'?'.http_build_query([
                 'redirectTo' =>

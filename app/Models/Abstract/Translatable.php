@@ -36,9 +36,9 @@ abstract class Translatable extends Model
     }
 
     public function addLocalizableText(
-        string       $text,
-        int          $languageId,
-        bool         $setAsDefault = false,
+        string $text,
+        int    $languageId,
+        bool   $setAsDefault = false,
     )
     {
         $translations = $this->translations()->firstOrCreate();
@@ -51,6 +51,27 @@ abstract class Translatable extends Model
         if ($setAsDefault) {
             $translations->update(['default_localized_text_id' => $localizedText->id]);
         }
+    }
+
+    public function updateLocalizableText(
+        int    $id,
+        string $content,
+        int    $languageId,
+        bool   $setAsDefault = false,
+    )
+    {
+        $localizedText = LocalizedText::findOrFail($id);
+        $localizedText->update(['content' => $content, 'language_id' => $languageId]);
+
+        if ($setAsDefault) {
+            $translations = $this->translations()->first();
+            $translations->update(['default_localized_text_id' => $localizedText->id]);
+        }
+    }
+
+    public function deleteLocalizableText(array $ids)
+    {
+        LocalizedText::whereIn('id', $ids)->delete();
     }
 
     protected static function booted()

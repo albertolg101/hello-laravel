@@ -13,7 +13,7 @@
                             {{ $poll->question->translationOrDefault($language->id)->content }}
                         </a>
                     </h3>
-                    <button>
+                    <button onclick="location.href = '{{ route('user.poll.edit', $poll->id) }}'">
                         Edit
                     </button>
                     <x-delete-button route="{{ route('user.poll.destroy', $poll->id) }}" />

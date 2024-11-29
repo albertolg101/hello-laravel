@@ -24,13 +24,21 @@
         const firstOption = document.getElementById('first-option');
         const secondOption = document.getElementById('second-option');
         const options = @json($poll->options);
-        const votes = [options[0].votes_count, options[1].votes_count];
-        const votesPercentage = [
-            votes[0] / (votes[0] + votes[1]) * 100,
-            votes[1] / (votes[0] + votes[1]) * 100
-        ];
 
         function handleClick(optionIndex) {
+            const votes = [options[0].votes_count, options[1].votes_count];
+
+            if (optionIndex === 0){
+                votes[0]++;
+            } else {
+                votes[1]++;
+            }
+
+            const votesPercentage = [
+                votes[0] / (votes[0] + votes[1]) * 100,
+                votes[1] / (votes[0] + votes[1]) * 100
+            ];
+
             firstOption.innerHTML = `${Math.floor(votesPercentage[0])}%`;
             secondOption.innerHTML = `${Math.ceil(votesPercentage[1])}%`;
             firstOption.style.width = `${votesPercentage[0]}%`;

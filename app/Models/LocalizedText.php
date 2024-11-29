@@ -12,6 +12,7 @@ class LocalizedText extends Model
     protected $fillable = [
         'content',
         'language_id',
+        'is_default',
     ];
 
     public function language()

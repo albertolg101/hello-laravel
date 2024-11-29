@@ -7,6 +7,7 @@ use App\Models\Language;
 use App\Models\LocalizedText;
 use App\Models\Poll;
 use App\Models\PollQuestion;
+use App\Rules\OnlyOneWithValueOnPath;
 use App\Rules\PathReducer;
 use App\Rules\InArray;
 use App\Rules\UniqueInPath;
@@ -47,7 +48,11 @@ class PollController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'data' => ['required', 'array', new UniqueInPath('*.language')],
+            'data' => [
+                'required', 'array',
+                new UniqueInPath('*.language'),
+                new OnlyOneWithValueOnPath('*.is_default', 'on')
+            ],
             'data.*.language' => ['required', 'int', 'exists:languages,id'],
             'data.*.question.value' => ['required', 'string', 'max:255'],
             'data.*.options' => ['required', 'array', 'min:2', 'max:2'],
@@ -62,15 +67,19 @@ class PollController extends Controller
             $poll->options()->create(),
         ];
         foreach ($request->input('data') as $data) {
+            $is_default = array_key_exists('is_default', $data) && $data['is_default'] === 'on' ? true : null;
+
             $question->translations()->create([
                 'content' => $data['question']['value'],
                 'language_id' => $data['language'],
+                'is_default' => $is_default,
             ]);
 
             for ($i = 0; $i < count($data['options']); $i++) {
                 $options[$i]->translations()->create([
                     'content' => $data['options'][$i]['value'],
                     'language_id' => $data['language'],
+                    'is_default' => $is_default,
                 ]);
             }
         }
@@ -114,6 +123,7 @@ class PollController extends Controller
                 new InArray('*.question.id', $question_translations_ids),
                 new InArray('*.options.0.id', $options_translations_ids[0]),
                 new InArray('*.options.1.id', $options_translations_ids[1]),
+                new OnlyOneWithValueOnPath('*.is_default', 'on')
             ],
             'data.*.language' => ['required', 'int', 'exists:languages,id'],
             'data.*.question.id' => ['nullable', 'int'],
@@ -138,12 +148,15 @@ class PollController extends Controller
         }
 
         foreach ($request->input('data') as $data) {
+            $is_default = array_key_exists('is_default', $data) && $data['is_default'] === 'on' ? true : null;
+
             if (is_null($data['question']['id'])) {
                 $question
                     ->translations()
                     ->create([
                         'content' => $data['question']['value'],
                         'language_id' => $data['language'],
+                        'is_default' => $is_default,
                     ]);
             } else {
                 $question
@@ -152,6 +165,7 @@ class PollController extends Controller
                     ->update([
                         'content' => $data['question']['value'],
                         'language_id' => $data['language'],
+                        'is_default' => $is_default,
                     ]);
             }
 
@@ -161,6 +175,7 @@ class PollController extends Controller
                         ->create([
                             'content' => $data['options'][$i]['value'],
                             'language_id' => $data['language'],
+                            'is_default' => $is_default,
                         ]);
                 } else {
                     $options[$i]->translations()
@@ -168,6 +183,7 @@ class PollController extends Controller
                         ->update([
                             'content' => $data['options'][$i]['value'],
                             'language_id' => $data['language'],
+                            'is_default' => $is_default,
                         ]);
                 }
             }

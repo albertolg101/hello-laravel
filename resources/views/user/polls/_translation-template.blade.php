@@ -8,11 +8,13 @@
     <x-form.hidden-input name="data[0][options][1][id]" class="secondOption"/>
     <x-form.textarea name="data[0][options][1][value]" class="secondOption" label="Second Option:"/>
 
+
     <x-form.select
         name="data[0][language]"
         label="Language:"
         :options="$languages->pluck('english_name', 'id')->toArray()"
     />
+    <x-form.checkbox name="data[0][is_default]" label="Is default:"/>
 
     <button type="button" class="delete-button">Delete</button>
 </div>

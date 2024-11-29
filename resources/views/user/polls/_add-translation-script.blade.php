@@ -24,6 +24,7 @@
             translation.querySelector('.form-element[name="data[' + index + '][options][1][id]"].secondOption').value = poll.options[1].id
             translation.querySelector('.form-element[name="data[' + index + '][options][1][value]"].secondOption').innerHTML = poll.options[1].value
             translation.querySelector('.form-element[name="data[' + index + '][language]"]').value = poll.language_id
+            translation.querySelector('.form-element[name="data[' + index + '][is_default]"]').checked = poll.is_default
         }
 
         mainFormBody.appendChild(translation)
@@ -55,7 +56,8 @@
                         value: poll.options[1].translations[i].content
                     }
                 ],
-                language_id: poll.question.translations[i].language_id
+                language_id: poll.question.translations[i].language_id,
+                is_default: poll.question.translations[i].is_default,
             }
 
             addTranslation(i, pollTranslation);

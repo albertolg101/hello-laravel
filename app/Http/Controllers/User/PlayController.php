@@ -28,10 +28,11 @@ class PlayController extends Controller
 
         $languages = Language::get();
         $defaultLanguage = $request->session()->get('defaultLanguage', 1);
+        $isLoggedIn = $request->user() !== null;
 
         return view(
             'user.play.show',
-            compact('poll', 'languages', 'defaultLanguage')
+            compact('poll', 'languages', 'defaultLanguage', 'isLoggedIn')
         );
     }
 }

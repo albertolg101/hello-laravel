@@ -6,11 +6,6 @@ use App\Http\Controllers\User\PollController;
 use App\Http\Controllers\User\PlayController;
 use App\Http\Controllers\User\VoteController;
 
-
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
-
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
@@ -19,8 +14,9 @@ Route::middleware('auth')->group(function () {
 
 require __DIR__.'/auth.php';
 
-
 Route::get('/', [PlayController::class, 'index'])->name('play.index');
-Route::post('/vote', [VoteController::class, 'store'])->name('vote.store');
+Route::middleware('auth')->group(function () {
+    Route::post('/vote', [VoteController::class, 'store'])->name('vote.store');
+    Route::resource('polls', PollController::class);
+});
 
-Route::resource('polls', PollController::class);

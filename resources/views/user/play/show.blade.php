@@ -18,11 +18,20 @@
                 close
             </span>
         </a>
-        <x-form.select
-            id="language-selector"
-            name="language"
-            :options="$languages->pluck('english_name', 'id')->toArray()"
-        />
+        <div id="actions">
+            <x-form.select
+                id="language-selector"
+                name="language"
+                :options="$languages->pluck('english_name', 'id')->toArray()"
+            />
+            @if($isLoggedIn === true)
+                <x-post-button route="{{ route('logout') }}">Log out</x-post-button>
+            @else
+                <button onclick="location.href = '{{ route('login') }}'">
+                    Log in
+                </button>
+            @endif
+        </div>
     </div>
     <script>
         const firstOption = document.getElementById('first-option');

@@ -2,10 +2,13 @@
     style="display: inline;"
     method="POST"
     action="{{ $route }}"
-    >
+>
     @csrf
-    @method('DELETE')
     <button>
-        Delete
+        @if(isset($slot))
+            {{ $slot }}
+        @else
+            Post
+        @endif
     </button>
 </form>

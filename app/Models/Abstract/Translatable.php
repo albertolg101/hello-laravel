@@ -8,70 +8,34 @@ use App\Models\Translations;
 
 abstract class Translatable extends Model
 {
-    public function translationOrDefault(int $languageId = null)
-    {
-        $language = $this->translation($languageId);
-        if ($language === null) {
-            $language = $this->translations->defaultLocalizedText;
-        }
-        if ($language === null) {
-            $language = $this->translations->localizedTexts->first();
-        }
-
-        return $language;
-    }
-
-    public function translation(int $languageId = null)
-    {
-        if ($languageId === null) {
-            return null;
-        }
-
-        return $this->translations->localizedTexts->where('language_id', $languageId)->first();
-    }
-
     public function translations()
     {
-        return $this->morphOne(Translations::class, 'translatable');
+        return $this->morphMany(LocalizedText::class, 'translatable');
     }
 
-    public function addLocalizableText(
-        string $text,
-        int    $languageId,
-        bool   $setAsDefault = false,
-    )
+    public function defaultTranslation()
     {
-        $translations = $this->translations()->firstOrCreate();
-        $localizedText = $translations->localizedTexts()->create([
-            'content' => $text,
-            'language_id' => $languageId,
-            'translations_id' => $translations->id,
-        ]);
-
-        if ($setAsDefault) {
-            $translations->update(['default_localized_text_id' => $localizedText->id]);
+        $defaultTranslation =  $this->translations->where('is_default', true)->first();
+        if ($defaultTranslation === null) {
+            $defaultTranslation = $this->translations->sortBy('id')->first();
         }
+
+        return $defaultTranslation;
     }
 
-    public function updateLocalizableText(
-        int    $id,
-        string $content,
-        int    $languageId,
-        bool   $setAsDefault = false,
-    )
+    public function translation(string $languageId)
     {
-        $localizedText = LocalizedText::findOrFail($id);
-        $localizedText->update(['content' => $content, 'language_id' => $languageId]);
+        return $this->translations->where('language_id', $languageId)->first();
+    }
 
-        if ($setAsDefault) {
-            $translations = $this->translations()->first();
-            $translations->update(['default_localized_text_id' => $localizedText->id]);
+    public function translationOrDefault(string $languageId)
+    {
+        $translation = $this->translation($languageId);
+        if ($translation === null) {
+            $translation = $this->defaultTranslation();
         }
-    }
 
-    public function deleteLocalizableText(array $ids)
-    {
-        LocalizedText::whereIn('id', $ids)->delete();
+        return $translation;
     }
 
     protected static function booted()

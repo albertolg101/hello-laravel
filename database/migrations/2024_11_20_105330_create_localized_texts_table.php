@@ -15,8 +15,18 @@ return new class extends Migration
             $table->id();
             $table->string('content');
             $table->foreignId('language_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('translations_id')->constrained()->cascadeOnDelete();
+            $table->morphs('translatable');
+            $table->boolean('is_default')->nullable()->default(null);
             $table->timestamps();
+
+            $table->unique(
+                ['language_id', 'translatable_id', 'translatable_type'],
+                'unique_language_translatable'
+            );
+            $table->unique(
+                ['is_default', 'translatable_id', 'translatable_type'],
+                'unique_default_translatable'
+            );
         });
     }
 

@@ -38,24 +38,24 @@
     @if(isset($poll))
         const poll = @json($poll);
 
-        index = poll.question.translations.localized_texts.length;
+        index = poll.question.translations.length;
         for (let i = 0; i < index; i++) {
             const pollTranslation = {
                 question: {
-                    id: poll.question.translations.localized_texts[i].id,
-                    value: poll.question.translations.localized_texts[i].content
+                    id: poll.question.translations[i].id,
+                    value: poll.question.translations[i].content
                 },
                 options: [
                     {
-                        id: poll.options[0].translations.localized_texts[i].id,
-                        value: poll.options[0].translations.localized_texts[i].content
+                        id: poll.options[0].translations[i].id,
+                        value: poll.options[0].translations[i].content
                     },
                     {
-                        id: poll.options[1].translations.localized_texts[i].id,
-                        value: poll.options[1].translations.localized_texts[i].content
+                        id: poll.options[1].translations[i].id,
+                        value: poll.options[1].translations[i].content
                     }
                 ],
-                language_id: poll.question.translations.localized_texts[i].language_id
+                language_id: poll.question.translations[i].language_id
             }
 
             addTranslation(i, pollTranslation);

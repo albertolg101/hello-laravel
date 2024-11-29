@@ -19,17 +19,12 @@ class PollController extends Controller
     {
         $polls = Poll::orderBy('id')->get();
         $polls->load([
-            'question.translations.localizedTexts',
-            'question.translations.defaultLocalizedText',
-            'options.translations.localizedTexts',
-            'options.translations.defaultLocalizedText',
+            'question.translations',
+            'options.translations',
         ]);
         $language = Language::first();
 
-        return view('user.polls.index', [
-            'polls' => $polls,
-            'language' => $language,
-        ]);
+        return view('user.polls.index', compact('polls', 'language'));
     }
 
     public function show(int $id)
@@ -76,16 +71,16 @@ class PollController extends Controller
             $poll->options()->create(),
         ];
         foreach ($request->input('data') as $data) {
-            $question->addLocalizableText(
-                $data['question']['value'],
-                $data['language'],
-            );
+            $question->translations()->create([
+                'content' => $data['question']['value'],
+                'language_id' => $data['language'],
+            ]);
 
             for ($i = 0; $i < count($data['options']); $i++) {
-                $options[$i]->addLocalizableText(
-                    $data['options'][$i]['value'],
-                    $data['language'],
-                );
+                $options[$i]->translations()->create([
+                    'content' => $data['options'][$i]['value'],
+                    'language_id' => $data['language'],
+                ]);
             }
         }
 
@@ -102,10 +97,8 @@ class PollController extends Controller
 
         $languages = Language::all();
         $poll->load(
-            'question.translations.localizedTexts',
-            'question.translations.defaultLocalizedText',
-            'options.translations.localizedTexts',
-            'options.translations.defaultLocalizedText',
+            'question.translations',
+            'options.translations',
         );
 
         return view('user.polls.edit', compact('poll', 'languages'));
@@ -120,16 +113,14 @@ class PollController extends Controller
         }
 
         $poll->load(
-            'question.translations.localizedTexts',
-            'question.translations.defaultLocalizedText',
-            'options.translations.localizedTexts',
-            'options.translations.defaultLocalizedText',
+            'question.translations',
+            'options.translations',
         );
 
         $question = $poll->question;
         $options = $poll->options;
-        $question_localizedTexts_ids = $question->translations->localizedTexts->pluck('id')->toArray();
-        $options_localizedTexts_ids = $options->map(fn($option) => $option->translations->localizedTexts->pluck('id')->toArray());
+        $question_translations_ids = $question->translations->pluck('id')->toArray();
+        $options_translations_ids = $options->map(fn($option) => $option->translations->pluck('id')->toArray());
 
         $request->validate([
             'data' => [
@@ -137,9 +128,9 @@ class PollController extends Controller
                 new UniqueInPath('*.language'),
                 new UniqueInPath('*.question.id'),
                 new UniqueInPath('*.options.*.id'),
-                new InArray('*.question.id', $question_localizedTexts_ids),
-                new InArray('*.options.0.id', $options_localizedTexts_ids[0]),
-                new InArray('*.options.1.id', $options_localizedTexts_ids[1]),
+                new InArray('*.question.id', $question_translations_ids),
+                new InArray('*.options.0.id', $options_translations_ids[0]),
+                new InArray('*.options.1.id', $options_translations_ids[1]),
             ],
             'data.*.language' => ['required', 'int', 'exists:languages,id'],
             'data.*.question.id' => ['nullable', 'int'],
@@ -149,48 +140,52 @@ class PollController extends Controller
             'data.*.options.*.value' => ['required', 'string', 'max:255'],
         ]);
 
-        $question->deleteLocalizableText(
-            array_diff(
-                $question_localizedTexts_ids,
-                PathReducer::reduce('*.question.id', $request->input('data'))
-            )
-        );
+        $question->translations()
+            ->whereNotIn(
+                'id',
+                PathReducer::reduce('*.question.id', $request->input('data'), true))
+            ->delete();
 
         for($i = 0; $i < count($options); $i++) {
-            $options[$i]->deleteLocalizableText(
-                array_diff(
-                    $options_localizedTexts_ids[$i],
-                    PathReducer::reduce('*.options.'.$i.'.id', $request->input('data'))
-                )
-            );
+            $options[$i]->translations()
+                ->whereNotIn(
+                    'id',
+                    PathReducer::reduce('*.options.'.$i.'.id', $request->input('data'), true))
+                ->delete();
         }
 
         foreach ($request->input('data') as $data) {
             if (is_null($data['question']['id'])) {
-                $question->addLocalizableText(
-                    $data['question']['value'],
-                    $data['language'],
-                );
+                $question
+                    ->translations()
+                    ->create([
+                        'content' => $data['question']['value'],
+                        'language_id' => $data['language'],
+                    ]);
             } else {
-                $question->updateLocalizableText(
-                    $data['question']['id'],
-                    $data['question']['value'],
-                    $data['language'],
-                );
+                $question
+                    ->translations()
+                    ->find($data['question']['id'])
+                    ->update([
+                        'content' => $data['question']['value'],
+                        'language_id' => $data['language'],
+                    ]);
             }
 
             for ($i = 0; $i < count($data['options']); $i++) {
                 if (is_null($data['options'][$i]['id'])) {
-                    $options[$i]->addLocalizableText(
-                        $data['options'][$i]['value'],
-                        $data['language'],
-                    );
+                    $options[$i]->translations()
+                        ->create([
+                            'content' => $data['options'][$i]['value'],
+                            'language_id' => $data['language'],
+                        ]);
                 } else {
-                    $options[$i]->updateLocalizableText(
-                        $data['options'][$i]['id'],
-                        $data['options'][$i]['value'],
-                        $data['language'],
-                    );
+                    $options[$i]->translations()
+                        ->find($data['options'][$i]['id'])
+                        ->update([
+                            'content' => $data['options'][$i]['value'],
+                            'language_id' => $data['language'],
+                        ]);
                 }
             }
         }

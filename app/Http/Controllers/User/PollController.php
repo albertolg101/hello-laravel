@@ -29,11 +29,7 @@ class PollController extends Controller
 
     public function show(int $id)
     {
-        $poll = Poll::find($id);
-
-        if ($poll === null) {
-            abort(404);
-        }
+        $poll = Poll::findOrFail($id);
 
         $language = Language::first();
         $prevPollId = Poll::where('id', '<', $id)->orderBy('id', 'desc')->first()?->id;
@@ -89,11 +85,7 @@ class PollController extends Controller
 
     public function edit(int $id)
     {
-        $poll = Poll::find($id);
-
-        if ($poll === null) {
-            abort(404);
-        }
+        $poll = Poll::findOrFail($id);
 
         $languages = Language::all();
         $poll->load(
@@ -106,11 +98,7 @@ class PollController extends Controller
 
     public function update(Request $request, int $id)
     {
-        $poll = Poll::find($id);
-
-        if ($poll === null) {
-            abort(404);
-        }
+        $poll = Poll::findOrFail($id);
 
         $poll->load(
             'question.translations',
@@ -195,11 +183,7 @@ class PollController extends Controller
 
     public function destroy(Request $request, int $id)
     {
-        $poll = Poll::find($id);
-
-        if ($poll === null) {
-            abort(404);
-        }
+        $poll = Poll::findOrFail($id);
 
         $poll->delete();
 

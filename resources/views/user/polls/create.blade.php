@@ -1,6 +1,6 @@
 <form
     id="main-form"
-    action="{{ route('user.poll.store') }}"
+    action="{{ route('polls.store') }}"
     method="post"
 >
     @csrf

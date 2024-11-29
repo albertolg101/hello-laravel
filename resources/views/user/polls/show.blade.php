@@ -19,25 +19,29 @@
         </p>
     </div>
     <div>
-        <button onclick="location.href = '{{ route('user.poll.create') }}'">New Poll</button>
-        <button onclick="location.href = '{{ route('user.poll.edit', $poll) }}'">Edit</button>
+        <button onclick="location.href = '{{ route('polls.create') }}'">New Poll</button>
+        <button onclick="location.href = '{{ route('polls.edit', $poll) }}'">Edit</button>
         <x-delete-button
-            :route="route('user.poll.destroy', $poll->id).'?'.http_build_query([
+            :route="route('polls.destroy', $poll->id).'?'.http_build_query([
                 'redirectTo' =>
                     $nextPollId !== null || $prevPollId !== null
-                        ? route('user.poll.show', $nextPollId ?? $prevPollId)
-                        : route('user.poll.index')])" />
+                        ? route('polls.show', $nextPollId ?? $prevPollId)
+                        : route('polls.index')])" />
     </div>
     <div>
         <button
-            onclick="location.href = '/user/polls/{{$prevPollId}}'"
+            @if(!is_null($prevPollId))
+                onclick="location.href = '{{ route('polls.show', $prevPollId) }}'"
+            @endif
             @disabled(is_null($prevPollId))
         >
             Prev
         </button>
-        <button onclick="location.href = '/user/polls'">Index</button>
+        <button onclick="location.href = '{{ route('polls.index') }}'">Index</button>
         <button
-            onclick="location.href = '/user/polls/{{$nextPollId}}'"
+            @if(!is_null($nextPollId))
+                onclick="location.href = '{{ route('polls.show', $nextPollId) }}'"
+            @endif
             @disabled(is_null($nextPollId))
         >
             Next

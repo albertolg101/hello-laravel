@@ -35,12 +35,7 @@ class PollController extends Controller
         $prevPollId = Poll::where('id', '<', $id)->orderBy('id', 'desc')->first()?->id;
         $nextPollId = Poll::where('id', '>', $id)->orderBy('id')->first()?->id;
 
-        return view('user.polls.show', [
-            'poll' => $poll,
-            'language' => $language,
-            'prevPollId' => $prevPollId,
-            'nextPollId' => $nextPollId,
-        ]);
+        return view('user.polls.show', compact('poll', 'language', 'prevPollId', 'nextPollId'));
     }
 
     public function create()
@@ -80,7 +75,7 @@ class PollController extends Controller
             }
         }
 
-        return redirect()->route('user.poll.show', ['id' => $poll->id]);
+        return redirect()->route('polls.show', ['poll' => $poll->id]);
     }
 
     public function edit(int $id)
@@ -178,7 +173,7 @@ class PollController extends Controller
             }
         }
 
-        return redirect()->route('user.poll.show', ['id' => $poll->id]);
+        return redirect()->route('polls.show', ['poll' => $poll->id]);
     }
 
     public function destroy(Request $request, int $id)
@@ -192,6 +187,6 @@ class PollController extends Controller
             return redirect($redirectTo);
         }
 
-        return redirect()->route('user.poll.index');
+        return redirect()->route('polls.index');
     }
 }

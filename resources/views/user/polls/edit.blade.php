@@ -1,6 +1,6 @@
 <form
     id="main-form"
-    action="{{ route('user.poll.update', $poll) }}"
+    action="{{ route('polls.update', $poll) }}"
     method="post"
 >
     @csrf

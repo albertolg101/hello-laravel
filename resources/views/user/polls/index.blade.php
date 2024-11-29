@@ -28,5 +28,6 @@
             </ul>
         @endforeach
         <button onclick="location.href = '{{ route('polls.create') }}'">New Poll</button>
+        <button onclick="location.href = '{{ route('play.index') }}'">Play!</button>
     </div>
 </x-layout>

@@ -13,6 +13,12 @@
                 {{ $poll->options[1]->translationOrDefault($language)->content }}
             </div>
         </div>
+        <a href="{{ route('polls.index') }}">
+            <span id="close-button" class="material-symbols-outlined">
+                close
+            </span>
+        </a>
+
     </div>
     <script>
         const firstOption = document.getElementById('first-option');

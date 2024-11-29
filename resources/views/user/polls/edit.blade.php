@@ -8,7 +8,7 @@
             @csrf
             @method('PUT')
             <div id="form-body"></div>
-            <button type="button" onclick="location.href = '{{ URL::previous() }}'">Cancel</button>
+            <button type="button" onclick="location.href = '{{ route('polls.show', $poll) }}'">Cancel</button>
             <button type="button" id='add-translation'>Add Translation</button>
             <button type="submit">Update Poll</button>
         </form>

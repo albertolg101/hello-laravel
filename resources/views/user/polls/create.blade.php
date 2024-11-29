@@ -7,7 +7,7 @@
         >
             @csrf
             <div id="form-body"></div>
-            <button type="button" onclick="location.href = '{{ URL::previous() }}'">Cancel</button>
+            <button type="button" onclick="location.href = '{{ route('polls.index') }}'">Cancel</button>
             <button type="button" id='add-translation'>Add Translation</button>
             <button type="submit">Create Poll</button>
         </form>

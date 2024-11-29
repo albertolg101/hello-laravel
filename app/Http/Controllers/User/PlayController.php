@@ -26,8 +26,12 @@ class PlayController extends Controller
             $query->withCount('votes');
         }]);
 
-        $language = Language::first();
+        $languages = Language::get();
+        $defaultLanguage = $request->session()->get('defaultLanguage', 1);
 
-        return view('user.play.show', compact('poll', 'language'));
+        return view(
+            'user.play.show',
+            compact('poll', 'languages', 'defaultLanguage')
+        );
     }
 }

@@ -1,5 +1,9 @@
 @include('components.form._label')
-<select name="{{$name}}" class="form-element">
+<select
+    @if(isset($id)) id="{{$id}}" @endif
+    name="{{$name}}"
+    class="form-element"
+>
     @foreach($options as $key => $option)
         <option value="{{ $key }}">{{ $option }}</option>
     @endforeach

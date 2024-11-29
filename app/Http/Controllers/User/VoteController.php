@@ -14,6 +14,9 @@ class VoteController extends Controller
             'option' => 'required|exists:poll_options,id',
         ]);
 
+        if ($request->query('defaultLanguage')) {
+            $request->session()->put('defaultLanguage', $request->query('defaultLanguage'));
+        }
 
         $option = PollOption::findOrFail($request->option);
         $option->votes()->create();

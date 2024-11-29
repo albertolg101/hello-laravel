@@ -5,6 +5,11 @@
 
 body {
     font-family: 'Roboto', sans-serif;
+    font-size: 1rem;
+}
+
+button {
+    font-size: 1rem;
 }
 
 #game {
@@ -65,4 +70,32 @@ body {
     cursor: pointer;
     transition: all 0.6s ease-in-out;
 }
+
+header {
+    padding: 30px 10vw;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+header > button {
+    max-width: fit-content;
+}
+
+#polls-layout {
+    width: 100vw;
+    padding: 20px 10vw;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+}
+
+.divider {
+    padding: 10px 5vw;
+}
+
+h3.solid {
+    border-bottom: 1px solid #000;
+}
+
 

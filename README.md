@@ -44,3 +44,9 @@ php artisan serve
 # Notes about Controller:
 
 - I really enjoyed programming the PollController, specially the update function. I even made some custom validation rules.
+
+# Application Pictures:
+<img width="1680" alt="Screenshot 2024-11-30 at 01 49 19" src="https://github.com/user-attachments/assets/c13091d1-2a91-46ee-84df-0b1ba30370b8">
+<img width="1678" alt="Screenshot 2024-11-30 at 01 50 56" src="https://github.com/user-attachments/assets/19f947ed-39dd-4978-94ba-5d46c4fbce79">
+<img width="1680" alt="Screenshot 2024-11-30 at 01 49 32" src="https://github.com/user-attachments/assets/81f42a7a-d905-4e93-a5d9-f28e8cdf5794">
+<img width="1680" alt="Screenshot 2024-11-30 at 01 51 44" src="https://github.com/user-attachments/assets/297b17e7-e830-4652-b7c8-8dc07c826b9f">

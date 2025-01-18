@@ -6,9 +6,10 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
+        "ext-intl": "*",
         "laravel/framework": "^11.9",
         "laravel/tinker": "^2.9",
-        "ext-intl": "*"
+        "spatie/laravel-flare": "^1.1"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.14",

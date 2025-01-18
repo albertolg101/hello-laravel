@@ -4,7 +4,7 @@ This application presents users a series of polls, each offering two possible an
 Users must select one option or may choose to abstain from voting. After making their choice or abstaining, 
 users can view the percentage breakdown for each option and switch to another poll.
 
-## Instalation
+## Installation
 
 ```bash
 git clone https://github.com/albertolg101/slide-and-pick.git

@@ -10,6 +10,7 @@ users can view the percentage breakdown for each option and switch to another po
 git clone https://github.com/albertolg101/slide-and-pick.git
 cd slide-and-pick
 composer install
+npm install && npm run build
 cp .env.example .env
 php artisan key generate
 ```

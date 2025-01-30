@@ -35,4 +35,8 @@ return [
         ],
     ],
 
+    'funfacts' => [
+        'endpoint' => 'https://api.api-ninjas.com/v1/facts',
+        'key' => env('API_NINJAS_KEY'),
+    ],
 ];

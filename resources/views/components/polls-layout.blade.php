@@ -5,6 +5,9 @@
         <button onclick="location.href = '{{ route('play.index') }}'">Play!</button>
         <x-post-button route="{{ route('logout') }}">Log out</x-post-button>
     </div>
+    <div style="padding-top: 20px">
+        <livewire:fun-fact />
+    </div>
 </header>
 <div class="divider">
     <hr class="solid"/>

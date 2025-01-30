@@ -8,6 +8,9 @@
     <div style="padding-top: 20px">
         <livewire:fun-fact />
     </div>
+    <div style="padding-top: 20px">
+        <livewire:get-api-token />
+    </div>
 </header>
 <div class="divider">
     <hr class="solid"/>

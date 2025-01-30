@@ -15,7 +15,6 @@ class EnforceAcceptHeader
      */
     public function handle(Request $request, Closure $next): Response
     {
-        ray("malanga");
         $request->headers->set('Accept', 'application/json');
         return $next($request);
     }

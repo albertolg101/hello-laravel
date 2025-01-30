@@ -28,9 +28,9 @@ abstract class Translatable extends Model
         return $this->translations->where('language_id', $languageId)->first();
     }
 
-    public function translationOrDefault(string $languageId)
+    public function translationOrDefault(?string $languageId)
     {
-        $translation = $this->translation($languageId);
+        $translation = is_null($languageId) ? null : $this->translation($languageId);
         if ($translation === null) {
             $translation = $this->defaultTranslation();
         }

@@ -9,13 +9,13 @@
                                 style="display: inline; white-space: nowrap;"
                             >
                                 <a href="{{ route('polls.show', $poll->id) }}">
-                                    {{ $poll->question->translationOrDefault($language->id)->content }}
+                                    {{ $poll->question }}
                                 </a>
                             </h3>
                         </div>
                         <ul>
                             @foreach($poll->options as $option)
-                                <li>{{ $option->translationOrDefault($language->id)->content }}</li>
+                                <li>{{ $option }}</li>
                             @endforeach
                         </ul>
                         <div>

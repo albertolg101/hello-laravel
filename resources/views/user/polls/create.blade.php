@@ -9,6 +9,7 @@
             <livewire:user.polls.form
                 variant="create"
                 :languages=$languages
+                :poll="$pollData['translations'] ?? []"
             />
         </form>
     </x-polls-layout>

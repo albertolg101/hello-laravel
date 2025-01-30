@@ -6,11 +6,10 @@
             method="post"
         >
             @csrf
-            <div id="form-body"></div>
-            <button type="button" onclick="location.href = '{{ route('polls.index') }}'">Cancel</button>
-            <button type="button" id='add-translation'>Add Translation</button>
-            <button type="submit">Create Poll</button>
+            <livewire:user.polls.form
+                variant="create"
+                :languages=$languages
+            />
         </form>
-        @include('user.polls._add-translation-script')
     </x-polls-layout>
 </x-layout>

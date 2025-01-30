@@ -10,6 +10,7 @@
         "laravel/framework": "^11.9",
         "laravel/tinker": "^2.9",
         "league/flysystem-aws-s3-v3": "^3.0",
+        "livewire/livewire": "^3.5",
         "spatie/laravel-backup": "^9.2",
         "spatie/laravel-flare": "^1.1"
     },

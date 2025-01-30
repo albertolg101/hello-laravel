@@ -92,12 +92,34 @@ class PollController extends Controller
         $poll = Poll::findOrFail($id);
 
         $languages = Language::all();
+        $pollData = [
+            'id' => $poll->id,
+            'translations' => []
+        ];
+
         $poll->load(
             'question.translations',
             'options.translations',
         );
 
-        return view('user.polls.edit', compact('poll', 'languages'));
+        for($i = 0; $i < $poll->question->translations->count(); $i++) {
+            $pollData['translations'][$i] = [
+                'question' => [
+                    'id' => $poll->question->translations[$i]->id,
+                    'value' => $poll->question->translations[$i]->content,
+                ],
+                'options' => $poll->options->map(function ($option) use ($i) {
+                    return [
+                        'id' => $option->translations[$i]->id,
+                        'value' => $option->translations[$i]->content,
+                    ];
+                })->toArray(),
+                'language' => $poll->question->translations[$i]->language_id,
+                'is_default' => $poll->question->translations[$i]->is_default === 1,
+            ];
+        }
+
+        return view('user.polls.edit', compact('pollData', 'languages'));
     }
 
     public function update(Request $request, int $id)

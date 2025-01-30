@@ -2,4 +2,7 @@
 <textarea
     name="{{$name}}"
     class="form-element {{ $class ?? '' }}"
->{{ $defaultValue ?? "" }}</textarea>
+    {{ $attributes->except(['name', 'class', 'defaultValue'])}}
+>
+    {{ $defaultValue ?? '' }}
+</textarea>

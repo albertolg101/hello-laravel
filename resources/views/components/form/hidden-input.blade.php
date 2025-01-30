@@ -1,6 +1,6 @@
 <input
     type="hidden"
     name="{{ $name }}"
-    value="{{ $value ?? '' }}"
     class="form-element {{ $class ?? '' }}"
+    {{ $attributes->except(['name', 'class']) }}
 />

@@ -12,6 +12,8 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+Route::redirect('dashboard', 'user.articles.index')->name('dashboard');
+
 require __DIR__.'/auth.php';
 
 Route::get('/', [PlayController::class, 'index'])->name('play.index');

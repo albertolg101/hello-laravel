@@ -17,6 +17,10 @@ class PlayController extends Controller
             $poll = Poll::inRandomOrder()->first();
         }
 
+        if ($poll === null) {
+            return redirect()->route('login');
+        }
+
         $poll->load(
             'question.translations',
             'options.translations',

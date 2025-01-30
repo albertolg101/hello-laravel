@@ -15,7 +15,6 @@ class PollController extends Controller
 {
     public function index()
     {
-        ray("hey");
         $polls = Poll::orderBy('id')->paginate(10);
         $polls->load([
             'question.translations',
